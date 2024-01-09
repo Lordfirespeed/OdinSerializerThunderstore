@@ -15,7 +15,7 @@ containsNsfwContent = false
 [build]
 icon = "./icons/odin-serializer.png"
 readme = "../../submodules/odin-serializer/README.md"
-outdir = "./dist"
+outdir = "../dist"
 
 [[build.copy]]
 source = "../../Build/Assets/Plugins/Sirenix/Odin Serializer/JIT/"
