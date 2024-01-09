@@ -26,6 +26,10 @@ jobs:
       - name: Install tools
         run: dotnet tool restore
 
+      - name: Generate Sources
+        run: |
+          dotnet msbuild BuildThunderstore/BuildThunderstore.csproj -t:GeneratePatchedSource
+
       - name: Build solution
         run: dotnet build
 
