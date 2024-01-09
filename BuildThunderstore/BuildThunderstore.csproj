@@ -87,8 +87,16 @@
     <ItemGroup>
         <ProjectReference Include="$(ProjectDir)../OdinSerializer/OdinSerializer.csproj" />
     </ItemGroup>
-    
-    <Target Name="PackThunderstore" AfterTargets="PostBuildEvent">
+
+    <Target Name="FixupReadme">
+        <Exec Command="git rev-parse HEAD:submodules/odin-serializer" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="CurrentCommitHash"/>
+        </Exec>
+
+        <Exec Command="sed -E 's/\/Images\//https:\/\/github.com\/TeamSirenix\/odin-serializer\/raw\/$(CurrentCommitHash)\/Images\//g' $(ProjectDir)../submodules/odin-serializer/README.md > $(ProjectDir)/obj/README.md"/>
+    </Target>
+
+    <Target Name="PackThunderstore" DependsOnTargets="FixupReadme" AfterTargets="PostBuildEvent">
         <Message Importance="high" Text="MinVer version is $(MinVerVersion)" />
         <PropertyGroup>
             <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
