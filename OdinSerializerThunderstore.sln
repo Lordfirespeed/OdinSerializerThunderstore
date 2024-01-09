@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildThunderstore", "BuildThunderstore\BuildThunderstore.csproj", "{77C918BB-BB3F-46AA-8EA8-9A906C972363}"
+EndProject
+Project("{00000000-0000-0000-0000-000000000000}") = "OdinSerializer", "OdinSerializer\OdinSerializer.csproj", "{C5E6A563-5F93-4B56-878F-44E9A8F17D11}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Release JIT|Any CPU = Release JIT|Any CPU
+		Release AOT|Any CPU = Release AOT|Any CPU
+    EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+	    {77C918BB-BB3F-46AA-8EA8-9A906C972363}.Release JIT|Any CPU.ActiveCfg = Release JIT|Any CPU
+        {77C918BB-BB3F-46AA-8EA8-9A906C972363}.Release JIT|Any CPU.Build.0 = Release JIT|Any CPU
+		{77C918BB-BB3F-46AA-8EA8-9A906C972363}.Release AOT|Any CPU.ActiveCfg = Release AOT|Any CPU
+		{77C918BB-BB3F-46AA-8EA8-9A906C972363}.Release AOT|Any CPU.Build.0 = Release AOT|Any CPU
+		{c5e6a563-5f93-4b56-878f-44e9a8f17d11}.Release JIT|Any CPU.ActiveCfg = Release JIT|Any CPU
+        {c5e6a563-5f93-4b56-878f-44e9a8f17d11}.Release JIT|Any CPU.Build.0 = Release JIT|Any CPU
+        {c5e6a563-5f93-4b56-878f-44e9a8f17d11}.Release AOT|Any CPU.ActiveCfg = Release AOT|Any CPU
+        {c5e6a563-5f93-4b56-878f-44e9a8f17d11}.Release AOT|Any CPU.Build.0 = Release AOT|Any CPU
+    EndGlobalSection
+EndGlobal
