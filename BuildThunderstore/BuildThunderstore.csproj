@@ -32,6 +32,7 @@
                 <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../submodules/odin-serializer/OdinSerializer", %(SourceOdinSerializerProjectFiles.SourcePath)))</RelativePath>
                 <_PatchedPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializer, %(SourceOdinSerializerProjectFiles.RelativePath)))</_PatchedPath>
                 <PatchedPath>$([System.IO.Path]::GetFullPath(%(SourceOdinSerializerProjectFiles._PatchedPath)))</PatchedPath>
+                <PatchedPath Condition="!$([System.IO.File]::Exists(%(SourceOdinSerializerProjectFiles.PatchedPath)))">/dev/null</PatchedPath>
             </SourceOdinSerializerProjectFiles>
         </ItemGroup>
         
@@ -42,7 +43,7 @@
                 <_PatchPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializerPatches, %(_OdinSerializerProjectFiles.RelativePath))).patch</_PatchPath>
                 <PatchPath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFiles._PatchPath)))</PatchPath>
                 <EnsurePatchDirectoryCommand>mkdir -p "$([System.IO.Path]::GetDirectoryName(%(OdinSerializerProjectFiles.PatchPath)))"</EnsurePatchDirectoryCommand>
-                <DiffCommand>diff -uN "%(_OdinSerializerProjectFiles.SourcePath)" "%(_OdinSerializerProjectFiles.PatchedPath)" > "%(OdinSerializerProjectFiles.PatchPath)"</DiffCommand>
+                <DiffCommand>diff -u "%(_OdinSerializerProjectFiles.SourcePath)" "%(_OdinSerializerProjectFiles.PatchedPath)" > "%(OdinSerializerProjectFiles.PatchPath)"</DiffCommand>
             </OdinSerializerProjectFiles>
         </ItemGroup>
     </Target>
@@ -67,19 +68,20 @@
                 <SourcePath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFilePatches._SourcePath)))</SourcePath>
                 <_PatchedPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializer, %(OdinSerializerProjectFilePatches.RelativePath)))</_PatchedPath>
                 <PatchedPath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFilePatches._PatchedPath)))</PatchedPath>
+                <EnsurePatchedDirectoryCommand>mkdir -p "$([System.IO.Path]::GetDirectoryName(%(OdinSerializerProjectFilePatches.PatchedPath)))"</EnsurePatchedDirectoryCommand>
                 <PatchCommand>patch -uo "%(OdinSerializerProjectFilePatches.PatchedPath)" "%(OdinSerializerProjectFilePatches.SourcePath)" "%(OdinSerializerProjectFilePatches.PatchPath)"</PatchCommand>
             </OdinSerializerProjectFilePatches>
         </ItemGroup>
     </Target>
     
     <Target Name="GeneratePatchedSource" DependsOnTargets="EnumeratePatches">
-        <Message Importance="high" Text="%(OdinSerializerProjectFilePatches.PatchCommand)"/>
-        
-        <!--Exec Command="%(OdinSerializerProjectFilePatches.PatchCommand)" ContinueOnError="true">
+        <Exec Command="%(OdinSerializerProjectFilePatches.EnsurePatchedDirectoryCommand)"/>
+        <Exec Command="%(OdinSerializerProjectFilePatches.PatchCommand)" ContinueOnError="true">
             <Output TaskParameter="ExitCode" ItemName="PatchExitCodes"/>
-        </Exec-->
+        </Exec>
 
         <Error Text="Patch command failed" Condition=" '%(PatchExitCodes.Identity)' != '0' "/>
+        <Exec Command="find $(ProjectDir)../OdinSerializer -type f -empty -delete -o -type d -empty -delete "/>
     </Target>
     
 </Project>
