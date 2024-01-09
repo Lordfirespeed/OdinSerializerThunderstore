@@ -11,6 +11,7 @@
 
 ## Build System/Scripts
 !/.config/
+!/.run
 !NuGet.Config
 !Directory.Build.props
 !build.sh
