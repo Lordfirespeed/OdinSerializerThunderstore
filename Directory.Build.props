@@ -12,7 +12,7 @@
     <!-- MinVer -->
     <PropertyGroup>
         <MinVerDefaultPreReleaseIdentifiers>dev</MinVerDefaultPreReleaseIdentifiers>
-        <MinVerTagPrefix>v.</MinVerTagPrefix>
+        <MinVerTagPrefix>v</MinVerTagPrefix>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="MinVer" Version="4.3.0">
