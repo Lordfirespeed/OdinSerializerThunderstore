@@ -14,7 +14,7 @@ containsNsfwContent = false
 
 [build]
 icon = "./icons/odin-serializer.png"
-readme = "../../submodules/odin-serializer/README.md"
+readme = "../obj/README.md"
 outdir = "../dist"
 
 [[build.copy]]
