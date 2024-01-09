@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Build</RootNamespace>
+    </PropertyGroup>
+    
+    <Target Name="EnumeratePatchedFiles">
+        <ItemGroup>
+            <_PatchedOdinSerializerProjectFiles Include="$(ProjectDir)../OdinSerializer/**" />
+            <_PatchedOdinSerializerProjectFiles Remove="$(ProjectDir)../OdinSerializer/bin/**" />
+            <_PatchedOdinSerializerProjectFiles Remove="$(ProjectDir)../OdinSerializer/obj/**" />
+            
+            <PatchedOdinSerializerProjectFiles Include="@(_PatchedOdinSerializerProjectFiles)">
+                <PatchedPath>%(_PatchedOdinSerializerProjectFiles.FullPath)</PatchedPath>
+                <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../OdinSerializer", %(PatchedOdinSerializerProjectFiles.PatchedPath)))</RelativePath>
+                <_SourcePath>$([System.IO.Path]::Combine($(ProjectDir)../submodules/odin-serializer/OdinSerializer, %(PatchedOdinSerializerProjectFiles.RelativePath)))</_SourcePath>
+                <SourcePath>$([System.IO.Path]::GetFullPath(%(PatchedOdinSerializerProjectFiles._SourcePath)))</SourcePath>
+            </PatchedOdinSerializerProjectFiles>
+        </ItemGroup>
+        
+        <ItemGroup>
+            <_SourceOdinSerializerProjectFiles Include="$(ProjectDir)../submodules/odin-serializer/OdinSerializer/**" />
+            <_SourceOdinSerializerProjectFiles Remove="$(ProjectDir)../submodules/odin-serializer/OdinSerializer/bin/**" />
+            <_SourceOdinSerializerProjectFiles Remove="$(ProjectDir)../submodules/odin-serializer/OdinSerializer/obj/**" />
+            <_SourceOdinSerializerProjectFiles Remove="%(PatchedOdinSerializerProjectFiles.SourcePath)" />
+
+            <SourceOdinSerializerProjectFiles Include="@(_SourceOdinSerializerProjectFiles)">
+                <SourcePath>%(_SourceOdinSerializerProjectFiles.FullPath)</SourcePath>
+                <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../submodules/odin-serializer/OdinSerializer", %(SourceOdinSerializerProjectFiles.SourcePath)))</RelativePath>
+                <_PatchedPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializer, %(SourceOdinSerializerProjectFiles.RelativePath)))</_PatchedPath>
+                <PatchedPath>$([System.IO.Path]::GetFullPath(%(SourceOdinSerializerProjectFiles._PatchedPath)))</PatchedPath>
+            </SourceOdinSerializerProjectFiles>
+        </ItemGroup>
+        
+        <ItemGroup>
+            <_OdinSerializerProjectFiles Include="@(PatchedOdinSerializerProjectFiles);@(SourceOdinSerializerProjectFiles)" KeepMetadata="RelativePath;SourcePath;PatchedPath"/>
+            
+            <OdinSerializerProjectFiles Include="@(_OdinSerializerProjectFiles)" KeepMetadata="RelativePath;SourcePath;PatchedPath">
+                <_PatchPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializerPatches, %(_OdinSerializerProjectFiles.RelativePath))).patch</_PatchPath>
+                <PatchPath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFiles._PatchPath)))</PatchPath>
+                <EnsurePatchDirectoryCommand>mkdir -p "$([System.IO.Path]::GetDirectoryName(%(OdinSerializerProjectFiles.PatchPath)))"</EnsurePatchDirectoryCommand>
+                <DiffCommand>diff -uN "%(_OdinSerializerProjectFiles.SourcePath)" "%(_OdinSerializerProjectFiles.PatchedPath)" > "%(OdinSerializerProjectFiles.PatchPath)"</DiffCommand>
+            </OdinSerializerProjectFiles>
+        </ItemGroup>
+    </Target>
+
+    <Target Name="UpdatePatches" DependsOnTargets="EnumeratePatchedFiles">
+        <Exec Command="%(OdinSerializerProjectFiles.EnsurePatchDirectoryCommand)"/>
+        <Exec Command="%(OdinSerializerProjectFiles.DiffCommand)" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" ItemName="DiffExitCodes"/>
+        </Exec>
+
+        <Error Text="Diff command failed" Condition=" '%(DiffExitCodes.Identity)' >= '2' "/>
+    </Target>
+    
+    <Target Name="EnumeratePatches">
+        <ItemGroup>
+            <_OdinSerializerProjectFilePatches Include="$(ProjectDir)../OdinSerializerPatches/**" />
+
+            <OdinSerializerProjectFilePatches Include="@(_OdinSerializerProjectFilePatches)">
+                <PatchPath>%(_OdinSerializerProjectFilePatches.FullPath)</PatchPath>
+                <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../OdinSerializerPatches", %(OdinSerializerProjectFilePatches.PatchPath)))</RelativePath>
+                <_SourcePath>$([System.IO.Path]::Combine($(ProjectDir)../submodules/odin-serializer/OdinSerializer, %(OdinSerializerProjectFilePatches.RelativePath)))</_SourcePath>
+                <SourcePath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFilePatches._SourcePath)))</SourcePath>
+                <_PatchedPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializer, %(OdinSerializerProjectFilePatches.RelativePath)))</_PatchedPath>
+                <PatchedPath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFilePatches._PatchedPath)))</PatchedPath>
+                <PatchCommand>patch -uo "%(OdinSerializerProjectFilePatches.PatchedPath)" "%(OdinSerializerProjectFilePatches.SourcePath)" "%(OdinSerializerProjectFilePatches.PatchPath)"</PatchCommand>
+            </OdinSerializerProjectFilePatches>
+        </ItemGroup>
+    </Target>
+    
+    <Target Name="GeneratePatchedSource" DependsOnTargets="EnumeratePatches">
+        <Message Importance="high" Text="%(OdinSerializerProjectFilePatches.PatchCommand)"/>
+        
+        <!--Exec Command="%(OdinSerializerProjectFilePatches.PatchCommand)" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" ItemName="PatchExitCodes"/>
+        </Exec-->
+
+        <Error Text="Patch command failed" Condition=" '%(PatchExitCodes.Identity)' != '0' "/>
+    </Target>
+    
+</Project>
