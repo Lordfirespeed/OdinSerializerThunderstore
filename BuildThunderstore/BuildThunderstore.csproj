@@ -84,4 +84,19 @@
         <Exec Command="find $(ProjectDir)../OdinSerializer -type f -empty -delete -o -type d -empty -delete "/>
     </Target>
     
+    <ItemGroup>
+        <ProjectReference Include="$(ProjectDir)../OdinSerializer/OdinSerializer.csproj" />
+    </ItemGroup>
+    
+    <Target Name="PackThunderstore" AfterTargets="PostBuildEvent">
+        <Message Importance="high" Text="MinVer version is $(MinVerVersion)" />
+        <PropertyGroup>
+            <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
+        </PropertyGroup>
+        <Exec Command="dotnet tcli build --config-path $(ProjectDir)assets/thunderstore.toml --package-version $(PlainVersion)" />
+        <ItemGroup>
+            <FilesToRename Include="$(ProjectDir)dist/*-$(PlainVersion).zip" />
+        </ItemGroup>
+        <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
+    </Target>
 </Project>
