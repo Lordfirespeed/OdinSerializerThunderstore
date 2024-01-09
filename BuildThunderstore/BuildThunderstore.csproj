@@ -62,7 +62,7 @@
 
             <OdinSerializerProjectFilePatches Include="@(_OdinSerializerProjectFilePatches)">
                 <PatchPath>%(_OdinSerializerProjectFilePatches.FullPath)</PatchPath>
-                <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../OdinSerializerPatches", %(OdinSerializerProjectFilePatches.PatchPath)))</RelativePath>
+                <RelativePath>$([MSBuild]::MakeRelative("$(ProjectDir)../OdinSerializerPatches", $([System.IO.Path]::ChangeExtension(%(OdinSerializerProjectFilePatches.PatchPath), "").TrimEnd("."))))</RelativePath>
                 <_SourcePath>$([System.IO.Path]::Combine($(ProjectDir)../submodules/odin-serializer/OdinSerializer, %(OdinSerializerProjectFilePatches.RelativePath)))</_SourcePath>
                 <SourcePath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFilePatches._SourcePath)))</SourcePath>
                 <_PatchedPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializer, %(OdinSerializerProjectFilePatches.RelativePath)))</_PatchedPath>
