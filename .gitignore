@@ -1,0 +1,48 @@
+# Exclude everything
+/*
+
+# Specific includes
+
+## Submodules 
+!submodules/
+
+## Assets
+!assets/
+
+## Build System/Scripts
+!/.config/
+!NuGet.Config
+!Directory.Build.props
+!build.sh
+!build.ps1
+!build.cmd
+
+## Markdowns
+!*.md
+!LICENSE
+
+## important Git files
+!.gitmodules
+!.gitignore
+!.gitattributes
+!.git-blame-ignore-revs
+
+## GitHub specific
+!.github/
+
+## Solution
+!OdinSerializerThunderstore.sln
+
+### OdinSerializer Project
+!/OdinSerializerPatches
+!/Libraries
+!/Build
+
+### BuildThunderstore Project
+!/BuildThunderstore
+/BuildThunderstore/[Bb]in
+/BuildThunderstore/[Oo]bj
+/BuildThunderstore/[Dd]ist
+
+# Explicit exceptions/ignores
+**.user
