@@ -1,5 +1,5 @@
 --- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Formatters/FormatterEmitter.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/FormatterEmitter.cs	2024-02-26 12:38:14.610778430 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/FormatterEmitter.cs	2024-02-26 13:52:38.140680448 +0000
 @@ -27,7 +27,9 @@
      using System.Collections.Generic;
      using System.Linq;
@@ -21,3 +21,84 @@
                          }
  
                          Formatters.AddInner(policy, type, result);
+@@ -192,13 +196,18 @@
+                 assemblyName.ProcessorArchitecture = ProcessorArchitecture.MSIL;
+                 assemblyName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameDomain;
+ 
++#if NETFRAMEWORK
+                 runtimeEmittedAssembly = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
++#else
++                runtimeEmittedAssembly = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
++#endif
+             }
+ 
+             if (runtimeEmittedModule == null)
+             {
+                 bool emitSymbolInfo;
+ 
++#if NETFRAMEWORK
+ #if UNITY_EDITOR
+                 emitSymbolInfo = true;
+ #else
+@@ -207,6 +216,9 @@
+ #endif
+ 
+                 runtimeEmittedModule = runtimeEmittedAssembly.DefineDynamicModule(RUNTIME_EMITTED_ASSEMBLY_NAME, emitSymbolInfo);
++#else
++                runtimeEmittedModule = runtimeEmittedAssembly.DefineDynamicModule(RUNTIME_EMITTED_ASSEMBLY_NAME);
++#endif
+             }
+         }
+ 
+@@ -224,13 +236,17 @@
+             string formatterName = moduleBuilder.Name + "." + formattedType.GetCompilableNiceFullName() + "__AOTFormatter";
+             string formatterHelperName = moduleBuilder.Name + "." + formattedType.GetCompilableNiceFullName() + "__FormatterHelper";
+ 
+-            if (serializableMembers.Count == 0)
+-            {
++            if (serializableMembers.Count == 0) {
+                 return moduleBuilder.DefineType(
+-                    formatterName,
+-                    TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class,
+-                    typeof(EmptyAOTEmittedFormatter<>).MakeGenericType(formattedType)
+-                ).CreateType();
++                        formatterName,
++                        TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class,
++                        typeof(EmptyAOTEmittedFormatter<>).MakeGenericType(formattedType)
++                    )
++#if NETFRAMEWORK
++                    .CreateType();
++#else
++                    .CreateTypeInfo();
++#endif
+             }
+ 
+             Dictionary<Type, MethodInfo> serializerReadMethods;
+@@ -287,7 +303,12 @@
+                 EmitWriteMethodContents(dynamicWriteMethod.GetILGenerator(), formattedType, serializerFields, memberNames, serializerWriteMethods);
+             }
+ 
+-            var result = formatterType.CreateType();
++            var result = formatterType
++#if NETFRAMEWORK
++                    .CreateType();
++#else
++                .CreateTypeInfo();
++#endif
+ 
+             // Register the formatter on the assembly
+             ((AssemblyBuilder)moduleBuilder.Assembly).SetCustomAttribute(new CustomAttributeBuilder(typeof(RegisterFormatterAttribute).GetConstructor(new Type[] { typeof(Type), typeof(int) }), new object[] { formatterType, -1 }));
+@@ -452,7 +473,12 @@
+             }
+ 
+             // Now we need to actually create the serializer container type so we can generate the dynamic methods below without getting TypeLoadExceptions up the wazoo
+-            return helperTypeBuilder.CreateType();
++            return helperTypeBuilder
++#if NETFRAMEWORK
++                    .CreateType();
++#else
++                .CreateTypeInfo();
++#endif
+         }
+ 
+         private static void EmitReadMethodContents(
