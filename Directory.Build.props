@@ -1,4 +1,10 @@
 <Project>
+    <!-- Build configurations -->
+    <PropertyGroup>
+        <Configurations>Release AOT;Release JIT;Release No-Unity JIT</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+    
     <PropertyGroup>
         <Authors>Lordfirespeed</Authors>
         <IsPackable>false</IsPackable>
