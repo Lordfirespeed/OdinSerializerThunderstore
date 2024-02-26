@@ -1,0 +1,34 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/PrefabModification.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/PrefabModification.cs	2024-02-26 12:49:29.002618266 +0000
+@@ -17,6 +17,7 @@
+ //-----------------------------------------------------------------------
+ namespace OdinSerializer
+ {
++#if UNITY_RUNTIME
+     using System;
+     using System.Collections;
+     using System.Collections.Generic;
+@@ -63,7 +64,7 @@
+         /// The dictionary keys to remove.
+         /// </summary>
+         public object[] DictionaryKeysRemoved;
+-
++        
+         /// <summary>
+         /// Applies the modification to the given Object.
+         /// </summary>
+@@ -300,6 +301,7 @@
+             }
+         }
+ 
++
+         private static void ReplaceAllReferencesInGraph(object graph, object oldReference, object newReference, HashSet<object> processedReferences = null)
+         {
+             if (processedReferences == null)
+@@ -653,4 +655,5 @@
+             }
+         }
+     }
++#endif
+ }
+\ No newline at end of file

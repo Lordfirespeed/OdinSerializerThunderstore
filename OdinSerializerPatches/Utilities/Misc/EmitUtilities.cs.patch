@@ -1,0 +1,15 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Misc/EmitUtilities.cs	2024-02-26 10:57:39.543857058 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Misc/EmitUtilities.cs	2024-02-26 12:59:36.531267207 +0000
+@@ -92,8 +92,11 @@
+ 
+ #if UNITY_EDITOR
+         private static Assembly EditorAssembly = typeof(UnityEditor.Editor).Assembly;
+-#endif
++#elif UNITY_RUNTIME
+         private static Assembly EngineAssembly = typeof(UnityEngine.Object).Assembly;
++#else
++        private static Assembly EngineAssembly = null;
++#endif
+ 
+         private static bool EmitIsIllegalForMember(MemberInfo member)
+         {

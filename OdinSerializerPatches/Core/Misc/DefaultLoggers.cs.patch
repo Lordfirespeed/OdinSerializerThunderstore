@@ -1,0 +1,33 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/DefaultLoggers.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/DefaultLoggers.cs	2024-02-26 12:38:02.514924790 +0000
+@@ -1,4 +1,6 @@
+-﻿namespace OdinSerializer
++﻿using System;
++
++namespace OdinSerializer
+ {
+     /// <summary>
+     /// Defines default loggers for serialization and deserialization. This class and all of its loggers are thread safe.
+@@ -19,6 +21,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Logs messages using Unity's <see cref="UnityEngine.Debug"/> class.
+         /// </summary>
+@@ -40,5 +43,13 @@
+                 return unityLogger;
+             }
+         }
++#else
++        private static readonly ILogger _dummyUnityLogger = new CustomLogger(Console.WriteLine, Console.WriteLine, Console.WriteLine);
++        public static ILogger UnityLogger {
++            get {
++                return _dummyUnityLogger;
++            }
++        }
++#endif
+     }
+ }
+\ No newline at end of file

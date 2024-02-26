@@ -1,0 +1,23 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Formatters/FormatterEmitter.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/FormatterEmitter.cs	2024-02-26 12:38:14.610778430 +0000
+@@ -27,7 +27,9 @@
+     using System.Collections.Generic;
+     using System.Linq;
+     using System.Reflection;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+ 
+ #if CAN_EMIT
+ 
+@@ -164,8 +166,10 @@
+                         }
+                         catch (Exception ex)
+                         {
++#if UNITY_RUNTIME
+                             Debug.LogError("The following error occurred while emitting a formatter for the type " + type.Name);
+                             Debug.LogException(ex);
++#endif
+                         }
+ 
+                         Formatters.AddInner(policy, type, result);

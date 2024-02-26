@@ -1,0 +1,160 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/FormatterLocators/FormatterLocator.cs	2024-02-26 10:57:39.535857155 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/FormatterLocators/FormatterLocator.cs	2024-02-26 12:46:07.781053051 +0000
+@@ -21,7 +21,9 @@
+     using System;
+     using System.Collections.Generic;
+     using System.Reflection;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+     using Utilities;
+ 
+     /// <summary>
+@@ -147,12 +149,18 @@
+                                 Priority = attr.Priority
+                             });
+                         }
++#if UNITY_RUNTIME
+                         catch (Exception ex)
+                         {
++
+                             Debug.LogException(new Exception("Exception was thrown while instantiating FormatterLocator of type " + attr.FormatterLocatorType.FullName + ".", ex));
++
+                         }
++#endif
++                        finally { }
+                     }
+                 }
++#if UNITY_RUNTIME
+                 catch (TypeLoadException)
+                 {
+                     if (ass.GetName().Name == "OdinSerializer")
+@@ -164,16 +172,22 @@
+                 {
+                     if (ass.GetName().Name == "OdinSerializer")
+                     {
++
+                         Debug.LogError("A ReflectionTypeLoadException occurred when FormatterLocator tried to load types from assembly '" + ass.FullName + "'. No serialization formatters in this assembly will be found. Serialization will be utterly broken.");
++
+                     }
+                 }
+                 catch (MissingMemberException)
+                 {
+                     if (ass.GetName().Name == "OdinSerializer")
+                     {
++
+                         Debug.LogError("A ReflectionTypeLoadException occurred when FormatterLocator tried to load types from assembly '" + ass.FullName + "'. No serialization formatters in this assembly will be found. Serialization will be utterly broken.");
++
+                     }
+                 }
++#endif
++                finally { }
+             }
+ 
+             // Order formatters and formatter locators by priority and then by name, to ensure consistency regardless of the order of loaded types, which is important for cross-platform cases.
+@@ -341,13 +355,13 @@
+         private static void LogAOTError(Type type, Exception ex)
+         {
+             var types = new List<string>(GetAllPossibleMissingAOTTypes(type)).ToArray();
+-
++#if UNITY_RUNTIME
+             Debug.LogError("Creating a serialization formatter for the type '" + type.GetNiceFullName() + "' failed due to missing AOT support. \n\n" +
+                 " Please use Odin's AOT generation feature to generate an AOT dll before building, and MAKE SURE that all of the following " +
+                 "types were automatically added to the supported types list after a scan (if they were not, please REPORT AN ISSUE with the details of which exact types the scan is missing " +
+                 "and ADD THEM MANUALLY): \n\n" + string.Join("\n", types) + "\n\nIF ALL THE TYPES ARE IN THE SUPPORT LIST AND YOU STILL GET THIS ERROR, PLEASE REPORT AN ISSUE." +
+                 "The exception contained the following message: \n" + ex.Message);
+-
++#endif
+             throw new SerializationAbortException("AOT formatter support was missing for type '" + type.GetNiceFullName() + "'.", ex);
+         }
+ 
+@@ -405,10 +419,13 @@
+                 {
+                     throw ex;
+                 }
++#if UNITY_RUNTIME   
+                 catch (Exception ex)
+                 {
++                 
+                     Debug.LogException(new Exception("Exception was thrown while calling FormatterLocator " + FormatterLocators[i].GetType().FullName + ".", ex));
+                 }
++#endif
+             }
+ 
+             // Then check for valid registered formatters
+@@ -481,10 +498,12 @@
+                 {
+                     throw ex;
+                 }
++#if UNITY_RUNTIME
+                 catch (Exception ex)
+                 {
+                     Debug.LogException(new Exception("Exception was thrown while calling FormatterLocator " + FormatterLocators[i].GetType().FullName + ".", ex));
+                 }
++#endif
+             }
+ 
+             formatters.Add((IFormatter)Activator.CreateInstance(typeof(ReflectionFormatter<>).MakeGenericType(type)));
+@@ -524,10 +543,12 @@
+                 {
+                     throw ex;
+                 }
++#if UNITY_RUNTIME
+                 catch (Exception ex)
+                 {
+                     Debug.LogException(new Exception("Exception was thrown while calling FormatterLocator " + FormatterLocators[i].GetType().FullName + ".", ex));
+                 }
++#endif
+             }
+ 
+             // Then check for valid registered formatters
+@@ -613,8 +634,9 @@
+                                 if (j > 0) argsStr = argsStr + ", ";
+                                 argsStr = argsStr + genericFormatterArgs[j].GetNiceFullName();
+                             }
+-
++#if UNITY_RUNTIME
+                             Debug.LogError("No AOT support was generated for serialization formatter type '" + info.FormatterType.GetNiceFullName() + "' for the generic arguments <" + argsStr + ">, and no weak fallback formatter was specified.");
++#endif
+                             throw aotEx;
+                         }
+                     }
+@@ -655,10 +677,12 @@
+                 {
+                     throw ex;
+                 }
++#if UNITY_RUNTIME
+                 catch (Exception ex)
+                 {
+                     Debug.LogException(new Exception("Exception was thrown while calling FormatterLocator " + FormatterLocators[i].GetType().FullName + ".", ex));
+                 }
++#endif
+             }
+ 
+             // If we can, emit a formatter to handle serialization of this object
+@@ -670,10 +694,12 @@
+                 }
+             }
+ 
++#if UNITY_RUNTIME
+             if (EmitUtilities.CanEmit)
+             {
+                 Debug.LogWarning("Fallback to reflection for type " + type.Name + " when emit is possible on this platform.");
+             }
++#endif
+ 
+             // Finally, we fall back to a reflection-based formatter if nothing else has been found
+             try
+@@ -724,10 +750,12 @@
+                 {
+                     throw ex;
+                 }
++#if UNITY_RUNTIME
+                 catch (Exception ex)
+                 {
+                     Debug.LogException(new Exception("Exception was thrown while instantiating formatter '" + type.GetNiceFullName() + "'.", ex));
+                 }
++#endif
+             }
+             return formatter;
+         }

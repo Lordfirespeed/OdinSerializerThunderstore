@@ -1,0 +1,272 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/SerializationUtility.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/SerializationUtility.cs	2024-02-26 12:57:27.536828044 +0000
+@@ -21,7 +21,9 @@
+     using System;
+     using System.Collections.Generic;
+     using System.IO;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+     using Utilities;
+ 
+     /// <summary>
+@@ -50,8 +52,12 @@
+                     return new JsonDataWriter(stream, context);
+ 
+                 case DataFormat.Nodes:
++#if UNITY_RUNTIME
+                     Debug.LogError("Cannot automatically create a writer for the format '" + DataFormat.Nodes + "', because it does not use a stream.");
+                     return null;
++#else
++                    throw new ArgumentOutOfRangeException("Cannot automatically create a writer for the format '" + DataFormat.Nodes + "', because it does not use a stream.");
++#endif
+ 
+                 default:
+                     throw new NotImplementedException(format.ToString());
+@@ -79,8 +85,12 @@
+                     return new JsonDataReader(stream, context);
+ 
+                 case DataFormat.Nodes:
+-                    Debug.LogError("Cannot automatically create a reader for the format '" + DataFormat.Nodes + "', because it does not use a stream.");
++#if UNITY_RUNTIME
++                    Debug.LogError("Cannot automatically create a writer for the format '" + DataFormat.Nodes + "', because it does not use a stream.");
+                     return null;
++#else
++                    throw new ArgumentOutOfRangeException("Cannot automatically create a writer for the format '" + DataFormat.Nodes + "', because it does not use a stream.");
++#endif
+ 
+                 default:
+                     throw new NotImplementedException(format.ToString());
+@@ -178,6 +188,7 @@
+             writer.FlushToStream();
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value, using the given writer.
+         /// </summary>
+@@ -194,6 +205,7 @@
+                 unityObjects = unityResolver.Value.GetReferencedUnityObjects();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Serializes the given value using the given writer.
+@@ -224,6 +236,7 @@
+             writer.FlushToStream();
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value, using the given writer.
+         /// </summary>
+@@ -258,8 +271,7 @@
+                 unityObjects = unityResolver.Value.GetReferencedUnityObjects();
+             }
+         }
+-
+-
++#endif
+ 
+         /// <summary>
+         /// Serializes the given value to a given stream in the specified format.
+@@ -294,6 +306,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value to a given stream in the specified format.
+         /// </summary>
+@@ -327,6 +340,7 @@
+                 cache.Dispose();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Serializes the given value to a given stream in the specified format.
+@@ -362,6 +376,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value to a given stream in the specified format.
+         /// </summary>
+@@ -396,6 +411,7 @@
+                 cache.Dispose();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Serializes the given value using the specified format, and returns the result as a byte array.
+@@ -413,6 +429,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value using the specified format, and returns the result as a byte array.
+         /// </summary>
+@@ -428,6 +445,7 @@
+                 return stream.Value.MemoryStream.ToArray();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Serializes the given value using the specified format, and returns the result as a byte array.
+@@ -446,6 +464,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Serializes the given value using the specified format and returns the result as a byte array.
+         /// </summary>
+@@ -463,7 +482,8 @@
+                 return stream.Value.MemoryStream.ToArray();
+             }
+         }
+-
++#endif
++        
+         /// <summary>
+         /// Deserializes a value from the given reader. This might fail with primitive values, as they don't come with metadata.
+         /// </summary>
+@@ -474,6 +494,7 @@
+             return Serializer.Get(typeof(object)).ReadValueWeak(reader);
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value from the given reader, using the given list of Unity objects for external index reference resolution. This might fail with primitive values, as they don't come with type metadata.
+         /// </summary>
+@@ -491,6 +512,7 @@
+                 return Serializer.Get(typeof(object)).ReadValueWeak(reader);
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Deserializes a value from the given reader.
+@@ -520,6 +542,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value of a given type from the given reader, using the given list of Unity objects for external index reference resolution.
+         /// </summary>
+@@ -556,6 +579,7 @@
+                 }
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Deserializes a value from the given stream in the given format. This might fail with primitive values, as they don't come with type metadata.
+@@ -592,6 +616,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value from the given stream in the given format, using the given list of Unity objects for external index reference resolution. This might fail with primitive values, as they don't come with type metadata.
+         /// </summary>
+@@ -627,6 +652,7 @@
+                 cache.Dispose();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Deserializes a value of a given type from the given stream in the given format.
+@@ -664,6 +690,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value of a given type from the given stream in the given format, using the given list of Unity objects for external index reference resolution.
+         /// </summary>
+@@ -700,6 +727,7 @@
+                 cache.Dispose();
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Deserializes a value from the given byte array in the given format. This might fail with primitive values, as they don't come with type metadata.
+@@ -718,6 +746,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value from the given byte array in the given format, using the given list of Unity objects for external index reference resolution. This might fail with primitive values, as they don't come with type metadata.
+         /// </summary>
+@@ -734,6 +763,7 @@
+                 return DeserializeValueWeak(stream.Value.MemoryStream, format, referencedUnityObjects);
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Deserializes a value of a given type from the given byte array in the given format.
+@@ -753,6 +783,7 @@
+             }
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Deserializes a value of a given type from the given byte array in the given format, using the given list of Unity objects for external index reference resolution.
+         /// </summary>
+@@ -771,6 +802,7 @@
+                 return DeserializeValue<T>(stream.Value.MemoryStream, format, referencedUnityObjects, context);
+             }
+         }
++#endif
+ 
+         /// <summary>
+         /// Creates a deep copy of an object. Returns null if null. All Unity objects references will remain the same - they will not get copied.
+@@ -795,7 +827,8 @@
+             {
+                 return obj;
+             }
+-
++            
++#if UNITY_RUNTIME
+             if (type.InheritsFrom(typeof(UnityEngine.Object))
+                 || type.InheritsFrom(typeof(System.Reflection.MemberInfo))
+                 || type.InheritsFrom(typeof(System.Reflection.Assembly))
+@@ -803,6 +836,7 @@
+             {
+                 return obj;
+             }
++#endif
+ 
+             using (var stream = CachedMemoryStream.Claim())
+             using (var serContext = Cache<SerializationContext>.Claim())
+@@ -810,11 +844,17 @@
+             {
+                 serContext.Value.Config.SerializationPolicy = SerializationPolicies.Everything;
+                 deserContext.Value.Config.SerializationPolicy = SerializationPolicies.Everything;
+-
++                
++#if UNITY_RUNTIME
+                 List<UnityEngine.Object> unityReferences;
+                 SerializeValue(obj, stream.Value.MemoryStream, DataFormat.Binary, out unityReferences, serContext);
+                 stream.Value.MemoryStream.Position = 0;
+                 return DeserializeValue<object>(stream.Value.MemoryStream, DataFormat.Binary, unityReferences, deserContext);
++#else
++                SerializeValue(obj, stream.Value.MemoryStream, DataFormat.Binary, serContext);
++                stream.Value.MemoryStream.Position = 0;
++                return DeserializeValue<object>(stream.Value.MemoryStream, DataFormat.Binary, deserContext);
++#endif
+             }
+         }
+     }

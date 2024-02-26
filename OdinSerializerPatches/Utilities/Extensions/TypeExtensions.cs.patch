@@ -1,0 +1,46 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Extensions/TypeExtensions.cs	2024-02-26 10:57:39.543857058 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Extensions/TypeExtensions.cs	2024-02-26 12:58:39.387958652 +0000
+@@ -24,7 +24,9 @@
+     using System.Linq;
+     using System.Reflection;
+     using System.Text;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+ 
+     /// <summary>
+     /// Type method extensions.
+@@ -33,7 +35,9 @@
+     {
+         private static readonly Func<float, float, bool> FloatEqualityComparerFunc = FloatEqualityComparer;
+         private static readonly Func<double, double, bool> DoubleEqualityComparerFunc = DoubleEqualityComparer;
++#if UNITY_RUNTIME
+         private static readonly Func<Quaternion, Quaternion, bool> QuaternionEqualityComparerFunc = QuaternionEqualityComparer;
++#endif
+ 
+         private static readonly object GenericConstraintsSatisfaction_LOCK = new object();
+         private static readonly Dictionary<Type, Type> GenericConstraintsSatisfactionInferredParameters = new Dictionary<Type, Type>();
+@@ -521,10 +525,12 @@
+             return a == b;
+         }
+ 
++#if UNITY_RUNTIME
+         private static bool QuaternionEqualityComparer(Quaternion a, Quaternion b)
+         {
+             return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+         }
++#endif
+ 
+         /// <summary>
+         /// Gets an equality comparer delegate used to compare the equality of values of a given type. In order, this will be:
+@@ -544,8 +550,10 @@
+                 return (Func<T, T, bool>)(object)FloatEqualityComparerFunc;
+             else if (typeof(T) == typeof(double))
+                 return (Func<T, T, bool>)(object)DoubleEqualityComparerFunc;
++#if UNITY_RUNTIME
+             else if (typeof(T) == typeof(Quaternion))
+                 return (Func<T, T, bool>)(object)QuaternionEqualityComparerFunc;
++#endif
+ 
+             Func<T, T, bool> result = null;
+             MethodInfo equalityMethod;

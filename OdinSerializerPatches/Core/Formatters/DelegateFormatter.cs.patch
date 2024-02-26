@@ -1,0 +1,27 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Formatters/DelegateFormatter.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/DelegateFormatter.cs	2024-02-26 11:49:00.654555736 +0000
+@@ -274,7 +274,7 @@
+             else
+             {
+                 Type targetType = methodInfo.DeclaringType;
+-
++#if UNITY_EDITOR
+                 if (typeof(UnityEngine.Object).IsAssignableFrom(targetType))
+                 {
+                     if ((target as UnityEngine.Object) == null)
+@@ -285,12 +285,15 @@
+                 }
+                 else
+                 {
++#endif
+                     if (object.ReferenceEquals(target, null))
+                     {
+                         reader.Context.Config.DebugContext.LogWarning("Method '" + declaringType.GetNiceFullName() + "." + methodInfo.GetNiceName() + "' of delegate to deserialize is an instance method, but no valid instance target of type '" + targetType.GetNiceFullName() + "' was in the serialization data. Has something been renamed since serialization?");
+                         return;
+                     }
++#if UNITY_EDITOR
+                 }
++#endif
+ 
+                 value = (T)(object)Delegate.CreateDelegate(delegateType, target, methodInfo, false);
+             }

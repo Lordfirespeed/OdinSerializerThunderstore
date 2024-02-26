@@ -1,0 +1,124 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Formatters/BaseFormatter.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/BaseFormatter.cs	2024-02-26 12:38:02.510924839 +0000
+@@ -63,18 +63,22 @@
+         /// Whether the serialized value is a value type.
+         /// </summary>
+         protected static readonly bool IsValueType = typeof(T).IsValueType;
+-
++        
++#if UNITY_RUNTIME
+         protected static readonly bool ImplementsISerializationCallbackReceiver = typeof(T).ImplementsOrInherits(typeof(UnityEngine.ISerializationCallbackReceiver));
++#endif
+         protected static readonly bool ImplementsIDeserializationCallback = typeof(T).ImplementsOrInherits(typeof(IDeserializationCallback));
+         protected static readonly bool ImplementsIObjectReference = typeof(T).ImplementsOrInherits(typeof(IObjectReference));
+ 
+         static BaseFormatter()
+         {
++#if UNITY_RUNTIME
+             if (typeof(T).ImplementsOrInherits(typeof(UnityEngine.Object)))
+             {
+                 DefaultLoggers.DefaultLogger.LogWarning("A formatter has been created for the UnityEngine.Object type " + typeof(T).Name + " - this is *strongly* discouraged. Unity should be allowed to handle serialization and deserialization of its own weird objects. Remember to serialize with a UnityReferenceResolver as the external index reference resolver in the serialization context.\n\n Stacktrace: " + new System.Diagnostics.StackTrace().ToString());
+             }
+-
++#endif
++            
+             MethodInfo[] methods = typeof(T).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+             
+             List<SerializationCallback> callbacks = new List<SerializationCallback>();
+@@ -247,7 +251,8 @@
+                     v.OnDeserialization(this);
+                     value = (T)v;
+                 }
+-
++        
++#if UNITY_RUNTIME
+                 if (ImplementsISerializationCallbackReceiver)
+                 {
+                     try
+@@ -261,6 +266,7 @@
+                         context.Config.DebugContext.LogException(ex);
+                     }
+                 }
++#endif
+             }
+ 
+             return value;
+@@ -287,6 +293,7 @@
+                 }
+             }
+ 
++#if UNITY_RUNTIME
+             if (ImplementsISerializationCallbackReceiver)
+             {
+                 try
+@@ -301,6 +308,7 @@
+                     context.Config.DebugContext.LogException(ex);
+                 }
+             }
++#endif
+ 
+             try
+             {
+@@ -433,7 +441,9 @@
+         protected readonly SerializationCallback[] OnDeserializedCallbacks;
+         protected readonly bool IsValueType;
+ 
++#if UNITY_RUNTIME
+         protected readonly bool ImplementsISerializationCallbackReceiver;
++#endif
+         protected readonly bool ImplementsIDeserializationCallback;
+         protected readonly bool ImplementsIObjectReference;
+ 
+@@ -442,14 +452,18 @@
+         public WeakBaseFormatter(Type serializedType)
+         {
+             this.SerializedType = serializedType;
++#if UNITY_RUNTIME
+             this.ImplementsISerializationCallbackReceiver = this.SerializedType.ImplementsOrInherits(typeof(UnityEngine.ISerializationCallbackReceiver));
++#endif
+             this.ImplementsIDeserializationCallback = this.SerializedType.ImplementsOrInherits(typeof(IDeserializationCallback));
+             this.ImplementsIObjectReference = this.SerializedType.ImplementsOrInherits(typeof(IObjectReference));
+ 
++#if UNITY_RUNTIME
+             if (this.SerializedType.ImplementsOrInherits(typeof(UnityEngine.Object)))
+             {
+                 DefaultLoggers.DefaultLogger.LogWarning("A formatter has been created for the UnityEngine.Object type " + this.SerializedType.Name + " - this is *strongly* discouraged. Unity should be allowed to handle serialization and deserialization of its own weird objects. Remember to serialize with a UnityReferenceResolver as the external index reference resolver in the serialization context.\n\n Stacktrace: " + new System.Diagnostics.StackTrace().ToString());
+             }
++#endif
+ 
+             MethodInfo[] methods = this.SerializedType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+ 
+@@ -528,6 +542,7 @@
+                 }
+             }
+ 
++#if UNITY_RUNTIME
+             if (ImplementsISerializationCallbackReceiver)
+             {
+                 try
+@@ -542,6 +557,7 @@
+                     context.Config.DebugContext.LogException(ex);
+                 }
+             }
++#endif
+ 
+             try
+             {
+@@ -642,7 +658,8 @@
+                     v.OnDeserialization(this);
+                     value = v;
+                 }
+-
++        
++#if UNITY_RUNTIME
+                 if (ImplementsISerializationCallbackReceiver)
+                 {
+                     try
+@@ -656,6 +673,7 @@
+                         context.Config.DebugContext.LogException(ex);
+                     }
+                 }
++#endif
+             }
+ 
+             return value;

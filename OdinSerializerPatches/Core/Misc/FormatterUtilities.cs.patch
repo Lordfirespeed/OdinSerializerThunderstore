@@ -1,0 +1,60 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/FormatterUtilities.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/FormatterUtilities.cs	2024-02-26 12:46:07.761053293 +0000
+@@ -25,7 +25,9 @@
+     using System.Linq;
+     using System.Reflection;
+     using System.Runtime.Serialization;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+ 
+     /// <summary>
+     /// Provides an array of utility methods which are commonly used by serialization formatters.
+@@ -77,7 +79,7 @@
+             }
+ #endif
+         }
+-
++        
+         /// <summary>
+         /// Gets a map of all serializable members on the given type. This will also properly map names extracted from <see cref="UnityEngine.Serialization.FormerlySerializedAsAttribute"/> and <see cref="PreviouslySerializedAsAttribute"/> to their corresponding members.
+         /// </summary>
+@@ -134,6 +136,7 @@
+             return result;
+         }
+ 
++#if UNITY_RUNTIME
+         /// <summary>
+         /// Creates a fake Unity null value of a given type, for the given <see cref="UnityEngine.Object"/>-derived owning type.
+         /// <para />
+@@ -174,6 +177,7 @@
+ 
+             return nullValue;
+         }
++#endif
+ 
+         /// <summary>
+         /// Determines whether a given type is a primitive type to the serialization system.
+@@ -283,11 +287,12 @@
+                 throw new ArgumentException("Can't set the value of a " + member.GetType().Name);
+             }
+         }
+-
++        
+         private static Dictionary<string, MemberInfo> FindSerializableMembersMap(Type type, ISerializationPolicy policy)
+         {
+             var map = GetSerializableMembers(type, policy).ToDictionary(n => n.Name, n => n);
+-
++            
++#if UNITY_RUNTIME
+             foreach (var member in map.Values.ToList())
+             {
+                 var serializedAsAttributes = member.GetAttributes<UnityEngine.Serialization.FormerlySerializedAsAttribute>();
+@@ -300,6 +305,7 @@
+                     }
+                 }
+             }
++#endif
+ 
+             return map;
+         }

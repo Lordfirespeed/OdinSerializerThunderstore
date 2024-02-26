@@ -1,0 +1,44 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/ArchitectureInfo.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/ArchitectureInfo.cs	2024-02-26 12:40:08.853396093 +0000
+@@ -19,7 +19,9 @@
+ namespace OdinSerializer
+ {
+     using System;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+ 
+     /// <summary>
+     /// This class gathers info about the current architecture for the purpose of determinining
+@@ -41,7 +43,7 @@
+ 
+         static ArchitectureInfo()
+         {
+-#if UNITY_EDITOR
++#if UNITY_RUNTIME
+             Architecture_Supports_Unaligned_Float32_Reads = true;
+             Architecture_Supports_All_Unaligned_ReadWrites = true;
+ #else
+@@ -49,11 +51,13 @@
+             // worst until we get more info about the platform we are on.
+             Architecture_Supports_Unaligned_Float32_Reads = false;
+             Architecture_Supports_All_Unaligned_ReadWrites = false;
+-
++#if UNITY_RUNTIME
+             Debug.Log("Odin Serializer ArchitectureInfo initialization with defaults (all unaligned read/writes disabled).");
+ #endif
++#endif
+         }
+ 
++#if UNITY_RUNTIME
+         internal static void SetRuntimePlatform(RuntimePlatform platform)
+         {
+             // Experience indicates that unaligned read/write support is pretty spotty and sometimes causes subtle bugs even when it appears to work,
+@@ -127,5 +131,6 @@
+                     break;
+             }
+         }
++#endif
+     }
+ }
+\ No newline at end of file

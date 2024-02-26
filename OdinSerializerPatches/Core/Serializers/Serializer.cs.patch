@@ -1,0 +1,29 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Serializers/Serializer.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Serializers/Serializer.cs	2024-02-26 12:58:04.596379628 +0000
+@@ -198,10 +198,13 @@
+                     {
+                         resultType = PrimitiveReaderWriterTypes[type];
+                     }
++#if UNITY_RUNTIME
+                     catch (KeyNotFoundException)
+                     {
+                         UnityEngine.Debug.LogError("Failed to find primitive serializer for " + type.Name);
+                     }
++#endif
++                    finally { }
+                 }
+                 else
+                 {
+@@ -253,10 +256,12 @@
+ 
+         private static void LogAOTError(Type type, ExecutionEngineException ex)
+         {
++#if UNITY_RUNTIME
+             UnityEngine.Debug.LogError("No AOT serializer was pre-generated for the type '" + type.GetNiceFullName() + "'. " +
+                 "Please use Odin's AOT generation feature to generate an AOT dll before building, and ensure that '" +
+                 type.GetNiceFullName() + "' is in the list of supported types after a scan. If it is not, please " +
+                 "report an issue and add it to the list manually.");
++#endif
+ 
+             throw new SerializationAbortException("AOT serializer was missing for type '" + type.GetNiceFullName() + "'.");
+         }

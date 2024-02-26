@@ -1,0 +1,36 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/SerializationPolicies.cs	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/SerializationPolicies.cs	2024-02-26 13:00:42.594467850 +0000
+@@ -21,7 +21,9 @@
+     using System;
+     using System.Reflection;
+     using System.Runtime.CompilerServices;
++#if UNITY_RUNTIME
+     using UnityEngine;
++#endif
+ 
+     /// <summary>
+     /// Contains a set of default implementations of the <see cref="ISerializationPolicy"/> interface.
+@@ -146,7 +148,11 @@
+                                     return true;
+                                 }
+ 
++#if UNITY_RUNTIME
+                                 return member.IsDefined<SerializeField>(false) || member.IsDefined<OdinSerializeAttribute>(false) || (UnitySerializationUtility.SerializeReferenceAttributeType != null && member.IsDefined(UnitySerializationUtility.SerializeReferenceAttributeType, false));
++#else
++                                return member.IsDefined<OdinSerializeAttribute>(false);
++#endif
+                             });
+                         }
+                     }
+@@ -191,7 +197,11 @@
+                                     return true;
+                                 }
+ 
++#if UNITY_RUNTIME
+                                 return member.IsDefined<SerializeField>(false) || member.IsDefined<OdinSerializeAttribute>(false) || (UnitySerializationUtility.SerializeReferenceAttributeType != null && member.IsDefined(UnitySerializationUtility.SerializeReferenceAttributeType, false));
++#else
++                                return false;
++#endif
+                             });
+                         }
+                     }

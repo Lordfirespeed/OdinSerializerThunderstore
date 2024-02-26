@@ -1,0 +1,25 @@
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Misc/UnityVersion.cs	2024-02-26 10:57:39.543857058 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Misc/UnityVersion.cs	2024-02-26 13:02:08.073433564 +0000
+@@ -17,6 +17,7 @@
+ //-----------------------------------------------------------------------
+ namespace OdinSerializer.Utilities
+ {
++#if UNITY_RUNTIME
+     using UnityEngine;
+ 
+     /// <summary>
+@@ -26,6 +27,7 @@
+ 
+     [UnityEditor.InitializeOnLoad]
+ #endif
++
+     public static class UnityVersion
+     {
+         static UnityVersion()
+@@ -78,4 +80,5 @@
+         /// </summary>
+         public static readonly int Minor;
+     }
++#endif
+ }
+\ No newline at end of file

@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/OdinSerializer.csproj	2024-01-08 13:11:08.046701966 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/OdinSerializer.csproj	2024-01-09 01:19:21.667948900 +0000
+--- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/OdinSerializer.csproj	2024-02-26 10:57:39.539857106 +0000
++++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/OdinSerializer.csproj	2024-02-26 13:00:42.578468044 +0000
 @@ -1,5 +1,5 @@
  ﻿<?xml version="1.0" encoding="utf-8"?>
 -<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -18,7 +18,55 @@
      <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
    </PropertyGroup>
    <PropertyGroup>
-@@ -87,16 +86,14 @@
+@@ -19,7 +18,7 @@
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Editor|AnyCPU'">
+     <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
+-    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER</DefineConstants>
++    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER;UNITY_RUNTIME</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
+     <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
+@@ -32,7 +31,7 @@
+     <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
+     <PlatformTarget>AnyCPU</PlatformTarget>
+     <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
+-    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER</DefineConstants>
++    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER;UNITY_RUNTIME</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <Optimize>true</Optimize>
+     <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
+@@ -44,6 +43,19 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release JIT|AnyCPU'">
+     <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\JIT\</OutputPath>
+     <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
++    <DefineConstants>CAN_EMIT;UNITY_RUNTIME</DefineConstants>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    <DocumentationFile>
++    </DocumentationFile>
++    <Optimize>true</Optimize>
++    <LangVersion>4</LangVersion>
++    <ErrorReport>prompt</ErrorReport>
++    <DebugType>pdbonly</DebugType>
++    <DebugSymbols>true</DebugSymbols>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release No-Unity JIT|AnyCPU'">
++    <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\No-Unity JIT\</OutputPath>
++    <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
+     <DefineConstants>CAN_EMIT</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <DocumentationFile>
+@@ -57,8 +69,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release AOT|AnyCPU'">
+     <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\AOT\</OutputPath>
+     <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
+-    <DefineConstants>
+-    </DefineConstants>
++    <DefineConstants>UNITY_RUNTIME</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <DocumentationFile>
+     </DocumentationFile>
+@@ -87,16 +98,19 @@
        <Private>False</Private>
      </Reference>
    </ItemGroup>
@@ -30,6 +78,11 @@
      <Compile Remove="obj\**" />
    </ItemGroup>
 -  <ItemGroup />
++  <ItemGroup Condition="$(Configuration) == 'Release No-Unity JIT'">
++    <Compile Remove="Unity Integration\**" />
++    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
++    <Reference Remove="Unity*" />
++  </ItemGroup>
    <Import Project="..\Libraries\MSBuild\15.0\Bin\Microsoft.CSharp.targets" />
 -  <PropertyGroup>
 -    <PostBuildEvent>call "$(SolutionDir)Libraries\PDB2MDB\pdb2mdb.exe" "$(TargetPath)"
