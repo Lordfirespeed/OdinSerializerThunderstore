@@ -1,6 +1,6 @@
 --- remote 
 +++ local 
-@@ -1,6 +1,5 @@
+@@ -1,75 +1,74 @@
  ﻿<?xml version="1.0" encoding="utf-8"?>
 -<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 -  <Import Project="..\Libraries\MSBuild\15.0\Microsoft.Common.props" Condition="Exists('..\Libraries\MSBuild\15.0\Microsoft.Common.props')" />
@@ -8,76 +8,123 @@
    <PropertyGroup>
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-@@ -9,9 +8,8 @@
-     <AppDesignerFolder>Properties</AppDesignerFolder>
+-    <ProjectGuid>{F1111936-6086-412C-AB26-D7D8D3448A2A}</ProjectGuid>
+-    <OutputType>Library</OutputType>
+-    <AppDesignerFolder>Properties</AppDesignerFolder>
++    
      <RootNamespace>OdinSerializer</RootNamespace>
      <AssemblyName>OdinSerializer</AssemblyName>
 -    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-+    <TargetFramework>netstandard2.0</TargetFramework>
-     <FileAlignment>512</FileAlignment>
+-    <FileAlignment>512</FileAlignment>
 -    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+-    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
++    <TargetFramework>netstandard2.1</TargetFramework>
    </PropertyGroup>
++  
++  <PropertyGroup>
++    <Company>Sirenix IVS</Company>
++    <Product>OdinSerializer</Product>
++    <Copyright>Copyright © 2018</Copyright>
++    <AssemblyVersion>1.0.0.0</AssemblyVersion>
++  </PropertyGroup>
++
    <PropertyGroup>
-@@ -19,7 +17,7 @@
+     <RunPostBuildEvent>Always</RunPostBuildEvent>
    </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Editor|AnyCPU'">
-     <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
+-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Editor|AnyCPU'">
+-    <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
 -    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER</DefineConstants>
-+    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER;UNITY_RUNTIME</DefineConstants>
++  
++  <PropertyGroup>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
-     <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
-@@ -32,7 +30,7 @@
+-    <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
+-    <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
+     <LangVersion>4</LangVersion>
+     <ErrorReport>prompt</ErrorReport>
+     <DebugType>pdbonly</DebugType>
+     <DebugSymbols>true</DebugSymbols>
+   </PropertyGroup>
++
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Editor|AnyCPU'">
++    <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
++    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER;UNITY_RUNTIME</DefineConstants>
++    <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
++    <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
++  </PropertyGroup>
++
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Editor|AnyCPU'">
      <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\</OutputPath>
-     <PlatformTarget>AnyCPU</PlatformTarget>
+-    <PlatformTarget>AnyCPU</PlatformTarget>
      <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
 -    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER</DefineConstants>
+-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <DefineConstants>DEBUG;CAN_EMIT;UNITY_EDITOR;ENABLE_PROFILER;UNITY_RUNTIME</DefineConstants>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <Optimize>true</Optimize>
      <DocumentationFile>..\Build\Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml</DocumentationFile>
-@@ -44,6 +42,20 @@
+-    <LangVersion>4</LangVersion>
+-    <ErrorReport>prompt</ErrorReport>
+-    <DebugType>pdbonly</DebugType>
+-    <DebugSymbols>true</DebugSymbols>
+   </PropertyGroup>
++
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release JIT|AnyCPU'">
      <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\JIT\</OutputPath>
      <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
 +    <DefineConstants>CAN_EMIT;UNITY_RUNTIME</DefineConstants>
-+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-+    <DocumentationFile>
-+    </DocumentationFile>
++    <DocumentationFile></DocumentationFile>
 +    <Optimize>true</Optimize>
-+    <LangVersion>4</LangVersion>
-+    <ErrorReport>prompt</ErrorReport>
-+    <DebugType>pdbonly</DebugType>
-+    <DebugSymbols>true</DebugSymbols>
 +  </PropertyGroup>
++
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release No-Unity JIT|AnyCPU'">
 +    <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\No-Unity JIT\</OutputPath>
-+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
++    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
 +    <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
      <DefineConstants>CAN_EMIT</DefineConstants>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     <DocumentationFile>
-@@ -57,8 +69,7 @@
+-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+-    <DocumentationFile>
+-    </DocumentationFile>
++    <DocumentationFile></DocumentationFile>
+     <Optimize>true</Optimize>
+-    <LangVersion>4</LangVersion>
+-    <ErrorReport>prompt</ErrorReport>
+-    <DebugType>pdbonly</DebugType>
+-    <DebugSymbols>true</DebugSymbols>
+   </PropertyGroup>
++
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release AOT|AnyCPU'">
      <OutputPath>..\Build\Assets\Plugins\Sirenix\Odin Serializer\AOT\</OutputPath>
      <NoWarn>CS1723, CS1723, CS1574, CS1584, CS1658</NoWarn>
 -    <DefineConstants>
 -    </DefineConstants>
+-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+-    <DocumentationFile>
+-    </DocumentationFile>
 +    <DefineConstants>UNITY_RUNTIME</DefineConstants>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     <DocumentationFile>
-     </DocumentationFile>
-@@ -87,16 +98,20 @@
++    <DocumentationFile></DocumentationFile>
+     <Optimize>true</Optimize>
+-    <LangVersion>4</LangVersion>
+-    <ErrorReport>prompt</ErrorReport>
+-    <DebugType>pdbonly</DebugType>
+-    <DebugSymbols>true</DebugSymbols>
+   </PropertyGroup>
++
+   <ItemGroup>
+-    <Reference Include="System" />
+     <Reference Include="UnityEditor">
+       <HintPath>..\Libraries\Unity\UnityEditor.dll</HintPath>
+       <Private>False</Private>
+@@ -87,16 +86,12 @@
        <Private>False</Private>
      </Reference>
    </ItemGroup>
-+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all"/>
-+  </ItemGroup>
-   <ItemGroup>
-     <Compile Include="*.cs;.\**\*.cs" />
-     <Compile Remove="obj\**" />
+-  <ItemGroup>
+-    <Compile Include="*.cs;.\**\*.cs" />
+-    <Compile Remove="obj\**" />
++
++  <ItemGroup Condition="$(Configuration) == 'Release No-Unity JIT'">
++    <Compile Remove="Unity Integration\**" />
++    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
++    <Reference Remove="Unity*" />
    </ItemGroup>
 -  <ItemGroup />
 -  <Import Project="..\Libraries\MSBuild\15.0\Bin\Microsoft.CSharp.targets" />
@@ -85,13 +132,6 @@
 -    <PostBuildEvent>call "$(SolutionDir)Libraries\PDB2MDB\pdb2mdb.exe" "$(TargetPath)"
 -call del /a "$(TargetDir)*.pdb*"</PostBuildEvent>
 -  </PropertyGroup>
-+  <ItemGroup Condition="$(Configuration) == 'Release No-Unity JIT'">
-+    <Compile Remove="Unity Integration\**" />
-+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
-+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
-+    <Reference Remove="Unity*" />
-+  </ItemGroup>
    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
         Other similar extension points exist, see Microsoft.Common.targets.
    <Target Name="BeforeBuild">
