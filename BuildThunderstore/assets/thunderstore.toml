@@ -18,8 +18,12 @@ readme = "../obj/README.md"
 outdir = "../dist"
 
 [[build.copy]]
-source = "../../Build/Assets/Plugins/Sirenix/Odin Serializer/JIT"
-target = "/BepInEx/plugins/Odin Serializer"
+source = "../../Build/Assets/Plugins/Sirenix/Odin Serializer/JIT/netstandard2.1/OdinSerializer.dll"
+target = "/BepInEx/plugins/Odin Serializer/OdinSerializer.dll"
+
+[[build.copy]]
+source = "../../Build/Assets/Plugins/Sirenix/Odin Serializer/JIT/netstandard2.1/OdinSerializer.pdb"
+target = "/BepInEx/plugins/Odin Serializer/OdinSerializer.pdb"
 
 [[build.copy]]
 source = "../../submodules/odin-serializer/LICENSE"
