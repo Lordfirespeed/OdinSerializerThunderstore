@@ -96,8 +96,7 @@
         <Exec Command="sed -E 's/\/Images\//https:\/\/github.com\/TeamSirenix\/odin-serializer\/raw\/$(CurrentCommitHash)\/Images\//g' $(ProjectDir)../submodules/odin-serializer/README.md > $(ProjectDir)/obj/README.md"/>
     </Target>
 
-    <Target Name="PackThunderstore" DependsOnTargets="FixupReadme" AfterTargets="PostBuildEvent">
-        <Message Importance="high" Text="MinVer version is $(MinVerVersion)" />
+    <Target Name="PackThunderstore" DependsOnTargets="FixupReadme;MinVer">
         <PropertyGroup>
             <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
         </PropertyGroup>
