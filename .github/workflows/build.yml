@@ -4,8 +4,20 @@ on:
   # Trigger the workflow on pushes to only the 'main' branch (this avoids duplicate checks being run e.g., for dependabot pull requests)
   push:
     branches: [ main ]
+
   # Trigger the workflow on any pull request
   pull_request:
+
+  # Trigger the workflow when called by another workflow
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
@@ -15,29 +27,35 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          ref: ${{ inputs.ref || null }}
           fetch-depth: 0
           filter: tree:0
+          submodules: recursive
 
       - name: Setup .NET environment
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.100"
+          dotnet-version: "9"
 
-      - name: Install Thunderstore CLI
+      - name: Restore project
         run: |
+          dotnet restore
           dotnet tool restore
           
       - name: Generate Sources
         run: |
-          dotnet msbuild BuildThunderstore/BuildThunderstore.csproj -t:GeneratePatchedSource
+          dotnet build BuildThunderstore -target:GeneratePatchedSource
 
       - name: Build solution
         run: |
-          dotnet build
+          dotnet build OdinSerializer -c "Release JIT"
+      
+      - name: Pack Thunderstore
+        run: |
+          dotnet build BuildThunderstore -c "Release JIT" -target:PackThunderstore
 
-      - name: Upload Artifacts
+      - name: Upload thunderstore artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: thunderstore-build
           path: BuildThunderstore/dist/*.zip

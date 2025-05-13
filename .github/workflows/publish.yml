@@ -2,42 +2,17 @@ name: Publish
 
 on:
   release:
-    types: [ released, prereleased ]
+    types: [prereleased, released]
 
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Source
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          ref: ${{ github.event.release.tag_name }}
-          fetch-depth: 0
-          filter: tree:0
-
-      - name: Setup .NET environment
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "8.0.100"
-
-      - name: Install tools
-        run: dotnet tool restore
-
-      - name: Generate Sources
-        run: |
-          dotnet msbuild BuildThunderstore/BuildThunderstore.csproj -t:GeneratePatchedSource
-
-      - name: Build solution
-        run: dotnet build
-
-      - name: Upload Thunderstore artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: thunderstore-build
-          path: ./BuildThunderstore/dist/*.zip
+    uses: './.github/workflows/build.yml'
+    with:
+      ref: ${{ github.event.release.tag_name }}
 
   upload-release-artifacts:
     name: Upload Release Artifacts
@@ -53,8 +28,12 @@ jobs:
       - name: Upload artifacts to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} thunderstore-build/*.zip
-  
+        run: |
+          FIND_ASSETS_COMMAND=( find . -type f '(' -false
+            -o -path "./thunderstore-build/*.zip"
+          ')' )
+          "${FIND_ASSETS_COMMAND[@]}" -print0 | xargs -0 gh release upload ${{ github.event.release.tag_name }}
+
   deploy-thunderstore:
     name: Deploy to Thunderstore
     needs: build
@@ -62,23 +41,26 @@ jobs:
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          filter: tree:0
+          submodules: recursive
 
       - name: Download Thunderstore artifact
         uses: actions/download-artifact@v4
         with:
           name: thunderstore-build
-          path: ./BuildThunderstore/dist
-
-      - name: Validate artifact exists
-        run: test -d ./BuildThunderstore/dist
+          path: BuildThunderstore/dist
 
       - name: Setup .NET environment
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.100"
+          dotnet-version: "9"
 
-      - name: Install Tools
-        run: dotnet tool restore
+      - name: Restore dotnet tools
+        run: |
+          dotnet tool restore
 
       - name: Publish to Thunderstore
         env:
