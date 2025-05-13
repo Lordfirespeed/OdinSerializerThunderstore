@@ -37,19 +37,23 @@ jobs:
         with:
           dotnet-version: "9"
 
-      - name: Restore project
-        run: |
-          dotnet restore
-          dotnet tool restore
-          
+      - name: Restore Solution Tools
+        run: dotnet tool restore
+
+      - name: Restore BuildThunderstore
+        run: dotnet restore BuildThunderstore
+
       - name: Generate Sources
         run: |
           dotnet build BuildThunderstore -target:GeneratePatchedSource
 
-      - name: Build solution
+      - name: Restore OdinSerializer
+        run: dotnet restore OdinSerializer
+
+      - name: Build OdinSerializer
         run: |
           dotnet build OdinSerializer -c "Release JIT"
-      
+
       - name: Pack Thunderstore
         run: |
           dotnet build BuildThunderstore -c "Release JIT" -target:PackThunderstore
