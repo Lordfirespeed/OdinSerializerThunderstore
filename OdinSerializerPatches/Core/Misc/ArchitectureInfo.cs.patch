@@ -1,5 +1,5 @@
---- remote 
-+++ local 
+--- remote
++++ local
 @@ -19,7 +19,9 @@
  namespace OdinSerializer
  {

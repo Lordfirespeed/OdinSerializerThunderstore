@@ -1,5 +1,5 @@
---- remote 
-+++ local 
+--- remote
++++ local
 @@ -1,4 +1,6 @@
 -﻿namespace OdinSerializer
 +﻿using System;

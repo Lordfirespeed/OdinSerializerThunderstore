@@ -1,5 +1,5 @@
---- remote 
-+++ local 
+--- remote
++++ local
 @@ -25,7 +25,9 @@
      using System.Linq;
      using System.Reflection;
