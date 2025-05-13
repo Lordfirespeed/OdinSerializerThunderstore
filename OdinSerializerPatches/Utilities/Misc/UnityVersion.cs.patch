@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Misc/UnityVersion.cs	2024-02-26 10:57:39.543857058 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Misc/UnityVersion.cs	2024-02-26 13:02:08.073433564 +0000
+--- remote 
++++ local 
 @@ -17,6 +17,7 @@
  //-----------------------------------------------------------------------
  namespace OdinSerializer.Utilities

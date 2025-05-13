@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Misc/EmitUtilities.cs	2024-02-26 10:57:39.543857058 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Misc/EmitUtilities.cs	2024-02-26 12:59:36.531267207 +0000
+--- remote 
++++ local 
 @@ -92,8 +92,11 @@
  
  #if UNITY_EDITOR

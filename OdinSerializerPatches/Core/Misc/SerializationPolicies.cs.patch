@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/SerializationPolicies.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/SerializationPolicies.cs	2024-02-26 13:00:42.594467850 +0000
+--- remote 
++++ local 
 @@ -21,7 +21,9 @@
      using System;
      using System.Reflection;

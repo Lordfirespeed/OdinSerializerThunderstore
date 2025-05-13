@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/FormatterUtilities.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/FormatterUtilities.cs	2024-02-26 12:46:07.761053293 +0000
+--- remote 
++++ local 
 @@ -25,7 +25,9 @@
      using System.Linq;
      using System.Reflection;

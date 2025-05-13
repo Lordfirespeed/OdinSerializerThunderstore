@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/SerializationUtility.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/SerializationUtility.cs	2024-02-26 12:57:27.536828044 +0000
+--- remote 
++++ local 
 @@ -21,7 +21,9 @@
      using System;
      using System.Collections.Generic;

@@ -43,7 +43,7 @@
                 <_PatchPath>$([System.IO.Path]::Combine($(ProjectDir)../OdinSerializerPatches, %(_OdinSerializerProjectFiles.RelativePath))).patch</_PatchPath>
                 <PatchPath>$([System.IO.Path]::GetFullPath(%(OdinSerializerProjectFiles._PatchPath)))</PatchPath>
                 <EnsurePatchDirectoryCommand>mkdir -p "$([System.IO.Path]::GetDirectoryName(%(OdinSerializerProjectFiles.PatchPath)))"</EnsurePatchDirectoryCommand>
-                <DiffCommand>diff -u "%(_OdinSerializerProjectFiles.SourcePath)" "%(_OdinSerializerProjectFiles.PatchedPath)" > "%(OdinSerializerProjectFiles.PatchPath)"</DiffCommand>
+                <DiffCommand>diff -u "%(_OdinSerializerProjectFiles.SourcePath)" --label="remote" "%(_OdinSerializerProjectFiles.PatchedPath)" --label="local" > "%(OdinSerializerProjectFiles.PatchPath)"</DiffCommand>
             </OdinSerializerProjectFiles>
         </ItemGroup>
     </Target>

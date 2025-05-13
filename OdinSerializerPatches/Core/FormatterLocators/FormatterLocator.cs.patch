@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/FormatterLocators/FormatterLocator.cs	2024-02-26 10:57:39.535857155 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/FormatterLocators/FormatterLocator.cs	2024-02-26 12:46:07.781053051 +0000
+--- remote 
++++ local 
 @@ -21,7 +21,9 @@
      using System;
      using System.Collections.Generic;

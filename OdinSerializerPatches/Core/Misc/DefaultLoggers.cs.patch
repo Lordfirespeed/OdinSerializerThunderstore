@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/DefaultLoggers.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/DefaultLoggers.cs	2024-02-26 12:38:02.514924790 +0000
+--- remote 
++++ local 
 @@ -1,4 +1,6 @@
 -﻿namespace OdinSerializer
 +﻿using System;

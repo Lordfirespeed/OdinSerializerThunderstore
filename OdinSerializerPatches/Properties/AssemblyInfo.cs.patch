@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Properties/AssemblyInfo.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /dev/null	2024-02-26 00:42:27.372000148 +0000
+--- remote 
++++ local 
 @@ -1,38 +0,0 @@
 -using System.Reflection;
 -using System.Runtime.InteropServices;

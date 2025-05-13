@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/ArchitectureInfo.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/ArchitectureInfo.cs	2024-02-26 12:40:08.853396093 +0000
+--- remote 
++++ local 
 @@ -19,7 +19,9 @@
  namespace OdinSerializer
  {

@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Formatters/DelegateFormatter.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Formatters/DelegateFormatter.cs	2024-02-26 11:49:00.654555736 +0000
+--- remote 
++++ local 
 @@ -274,7 +274,7 @@
              else
              {

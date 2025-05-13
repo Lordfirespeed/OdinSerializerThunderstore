@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Utilities/Misc/ImmutableList.cs	2024-02-26 10:57:39.543857058 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Utilities/Misc/ImmutableList.cs	2024-02-26 13:01:20.654007335 +0000
+--- remote 
++++ local 
 @@ -20,7 +20,9 @@
      using System;
      using System.Collections;

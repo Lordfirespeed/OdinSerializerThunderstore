@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Misc/PrefabModification.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Misc/PrefabModification.cs	2024-02-26 12:49:29.002618266 +0000
+--- remote 
++++ local 
 @@ -17,6 +17,7 @@
  //-----------------------------------------------------------------------
  namespace OdinSerializer

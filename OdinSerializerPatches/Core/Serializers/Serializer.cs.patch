@@ -1,5 +1,5 @@
---- /home/joeclack/RiderProjects/OdinSerializerThunderstore/submodules/odin-serializer/OdinSerializer/Core/Serializers/Serializer.cs	2024-02-26 10:57:39.539857106 +0000
-+++ /home/joeclack/RiderProjects/OdinSerializerThunderstore/OdinSerializer/Core/Serializers/Serializer.cs	2024-02-26 12:58:04.596379628 +0000
+--- remote 
++++ local 
 @@ -198,10 +198,13 @@
                      {
                          resultType = PrimitiveReaderWriterTypes[type];
